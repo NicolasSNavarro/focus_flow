@@ -1,0 +1,15 @@
+<div id="tareas_header" class="flex items-center justify-between shrink-0">
+  <h2 class="font-semibold text-stone-700">
+    Mis tareas
+    <span class="ml-1 text-xs font-normal text-stone-400">(<%= tareas_count %>/5)</span>
+  </h2>
+  <% if tareas_count < 5 %>
+    <%= link_to new_tarea_path,
+          data: { turbo_frame: "modal_frame", action: "click->modal#open" },
+          class: "inline-flex items-center gap-1 text-xs bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 rounded-full transition-colors font-medium" do %>
+      <span>+</span> Agregar
+    <% end %>
+  <% else %>
+    <span class="text-xs text-stone-400 bg-stone-100 px-3 py-1.5 rounded-full">Límite alcanzado</span>
+  <% end %>
+</div>

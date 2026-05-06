@@ -1,0 +1,12 @@
+<%# Reemplaza la tarjeta editada en su lugar %>
+<%= turbo_stream.replace dom_id(@tarea) do %>
+  <%= render "tarea_card", tarea: @tarea %>
+<% end %>
+
+<%# Actualiza el contador (completar una tarea puede cambiar el estado) %>
+<%= turbo_stream.replace "tareas_header" do %>
+  <%= render "tareas/header", tareas_count: Tarea.count %>
+<% end %>
+
+<%# Cierra el modal %>
+<%= turbo_stream.update "modal_frame", "" %>

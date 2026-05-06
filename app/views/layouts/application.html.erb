@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html class="h-full">
+  <head>
+    <title><%= content_for(:title) || "FocusFlow" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+    <link rel="icon" href="/icon.png" type="image/png">
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <%# data-controller="modal" en body para que todos los links dentro puedan disparar modal#open %>
+  <body class="h-full bg-orange-50 text-stone-800 font-sans overflow-hidden"
+        data-controller="modal">
+
+    <%# Flash messages %>
+    <div id="flash" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 space-y-2">
+      <% flash.each do |type, msg| %>
+        <div class="px-5 py-2 rounded-full shadow text-sm font-medium
+          <%= type == 'notice' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-red-100 text-red-800 border border-red-300' %>"
+          data-controller="flash">
+          <%= msg %>
+        </div>
+      <% end %>
+    </div>
+
+    <%# Modal overlay — referenciado como target desde el controlador %>
+    <div data-modal-target="overlay"
+         class="hidden fixed inset-0 z-40 items-center justify-center">
+      <div class="absolute inset-0 bg-stone-900/40 backdrop-blur-sm"
+           data-action="click->modal#close"></div>
+      <div class="relative z-10 w-full max-w-md">
+        <%= turbo_frame_tag "modal_frame" %>
+      </div>
+    </div>
+
+    <%= yield %>
+  </body>
+</html>

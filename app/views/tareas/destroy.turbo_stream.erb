@@ -1,0 +1,7 @@
+<%= turbo_stream.remove dom_id(@tarea) %>
+
+<%= turbo_stream.replace "tareas_header" do %>
+  <%= render "tareas/header", tareas_count: Tarea.count %>
+<% end %>
+
+<%= turbo_stream.update "sugerencia_ia", "" %>

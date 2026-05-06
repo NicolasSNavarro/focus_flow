@@ -1,0 +1,105 @@
+<div class="h-screen flex flex-col px-6 py-5 gap-4 max-w-6xl mx-auto">
+
+  <%# Encabezado %>
+  <header class="flex items-center justify-between shrink-0">
+    <div>
+      <h1 class="text-2xl font-bold text-orange-700 tracking-tight">🌊 FocusFlow</h1>
+      <p class="text-xs text-stone-500 mt-0.5">Tu espacio de calma y foco</p>
+    </div>
+    <span class="text-xs text-stone-400"><%= l(Date.current, format: :long) %></span>
+  </header>
+
+  <%# Contenido principal: 2 columnas %>
+  <div class="flex-1 grid grid-cols-2 gap-5 min-h-0">
+
+    <%# COLUMNA IZQUIERDA: Tareas %>
+    <section class="flex flex-col gap-3 min-h-0">
+      <%= render "tareas/header", tareas_count: @tareas.count %>
+
+      <%# Lista de tareas %>
+      <div id="tareas_lista" class="flex-1 flex flex-col gap-2 overflow-y-auto pr-1">
+        <% if @tareas.empty? %>
+          <div class="flex-1 flex flex-col items-center justify-center text-center p-6 rounded-2xl border-2 border-dashed border-orange-200">
+            <span class="text-4xl mb-2">🌱</span>
+            <p class="text-stone-500 text-sm">No tenés tareas aún.</p>
+            <p class="text-stone-400 text-xs mt-1">¡Empezá agregando una!</p>
+          </div>
+        <% else %>
+          <% @tareas.each do |tarea| %>
+            <%= render "tareas/tarea_card", tarea: tarea %>
+          <% end %>
+        <% end %>
+      </div>
+
+      <%# Botón IA %>
+      <div class="shrink-0">
+        <%= button_to ai_sugerencia_path,
+              method: :post,
+              data: { turbo_stream: true },
+              class: "w-full py-2.5 px-4 rounded-2xl bg-violet-100 hover:bg-violet-200 border border-violet-300 text-violet-800 text-sm font-medium transition-colors flex items-center justify-center gap-2" do %>
+          <span>🧠</span> ¿Por dónde empiezo?
+        <% end %>
+        <div id="sugerencia_ia"></div>
+      </div>
+    </section>
+
+    <%# COLUMNA DERECHA: Pomodoro %>
+    <section class="flex flex-col items-center justify-center gap-6"
+             data-controller="pomodoro">
+      <h2 class="font-semibold text-stone-700 self-start">Temporizador Pomodoro</h2>
+
+      <%# Anillo SVG %>
+      <div class="relative flex items-center justify-center">
+        <svg class="w-56 h-56 -rotate-90" viewBox="0 0 200 200">
+          <%# Pista de fondo %>
+          <circle cx="100" cy="100" r="88"
+                  fill="none"
+                  stroke="#fed7aa"
+                  stroke-width="12"/>
+          <%# Arco de progreso %>
+          <circle cx="100" cy="100" r="88"
+                  fill="none"
+                  stroke="#f97316"
+                  stroke-width="12"
+                  stroke-linecap="round"
+                  stroke-dasharray="552.9"
+                  stroke-dashoffset="0"
+                  data-pomodoro-target="ring"
+                  class="transition-all duration-1000 ease-linear"/>
+        </svg>
+
+        <%# Tiempo central %>
+        <div class="absolute flex flex-col items-center">
+          <span class="text-5xl font-bold tabular-nums text-stone-800"
+                data-pomodoro-target="display">25:00</span>
+          <span class="text-xs text-stone-400 mt-1 uppercase tracking-wider"
+                data-pomodoro-target="label">Foco</span>
+        </div>
+      </div>
+
+      <%# Controles %>
+      <div class="flex items-center gap-3">
+        <button data-action="click->pomodoro#toggle"
+                data-pomodoro-target="btn"
+                class="px-8 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-semibold text-sm transition-colors shadow-sm">
+          Iniciar
+        </button>
+        <button data-action="click->pomodoro#reset"
+                class="px-5 py-2.5 bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-full text-sm transition-colors">
+          Reiniciar
+        </button>
+      </div>
+
+      <%# Contador de ciclos %>
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-stone-500">Ciclos completados:</span>
+        <div class="flex gap-1" data-pomodoro-target="dots">
+          <% 4.times do |i| %>
+            <div class="w-3 h-3 rounded-full bg-orange-200" data-dot-index="<%= i %>"></div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

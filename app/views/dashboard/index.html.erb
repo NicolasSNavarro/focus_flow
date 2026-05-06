@@ -19,7 +19,7 @@
       <%# Lista de tareas %>
       <div id="tareas_lista" class="flex-1 flex flex-col gap-2 overflow-y-auto pr-1">
         <% if @tareas.empty? %>
-          <div class="flex-1 flex flex-col items-center justify-center text-center p-6 rounded-2xl border-2 border-dashed border-orange-200">
+          <div id="tareas_empty_state" class="flex-1 flex flex-col items-center justify-center text-center p-6 rounded-2xl border-2 border-dashed border-orange-200">
             <span class="text-4xl mb-2">🌱</span>
             <p class="text-stone-500 text-sm">No tenés tareas aún.</p>
             <p class="text-stone-400 text-xs mt-1">¡Empezá agregando una!</p>

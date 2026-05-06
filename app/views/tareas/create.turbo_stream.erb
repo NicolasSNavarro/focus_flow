@@ -1,3 +1,6 @@
+<%# Elimina el empty state si existe %>
+<%= turbo_stream.remove "tareas_empty_state" %>
+
 <%# Agrega la nueva tarjeta al tope de la lista %>
 <%= turbo_stream.prepend "tareas_lista" do %>
   <%= render "tarea_card", tarea: @tarea %>

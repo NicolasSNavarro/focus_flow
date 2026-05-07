@@ -61,4 +61,4 @@ group :development do
   gem "web-console"
 end
 
-gem "ruby_llm", "~> 1.14"
+gem "ruby_llm", "~> 1.15"
